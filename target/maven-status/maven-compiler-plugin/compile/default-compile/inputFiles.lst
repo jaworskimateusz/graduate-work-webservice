@@ -1,9 +1,0 @@
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/repository/LocationRepository.java
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/exception/NotFoundAdvice.java
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/exception/NotFoundException.java
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/config/Config.java
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/controller/LocationController.java
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/MachineapiApplication.java
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/model/Location.java
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/service/LocationService.java
-/Applications/Documents/Studies/inz/application/backend/src/main/java/pl/jaworskimateusz/machineapi/exception/CustomErrorResponse.java
