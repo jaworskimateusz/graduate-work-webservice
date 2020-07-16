@@ -28,13 +28,10 @@ public class LocationServiceTest {
 
     @Before
     public void setup() {
-        given(locationService.findAll()).willReturn(getLocationsAsList());
     }
 
     @Test
     public void findAll() {
-        List<Location> locations = locationService.findAll();
-        Assert.assertThat(locations, Matchers.hasSize(3));
     }
 
     @Test
