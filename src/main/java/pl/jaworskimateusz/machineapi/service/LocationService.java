@@ -1,6 +1,5 @@
 package pl.jaworskimateusz.machineapi.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import pl.jaworskimateusz.machineapi.exception.NotFoundException;
 import pl.jaworskimateusz.machineapi.model.Location;
