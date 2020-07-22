@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService {
         if (user != null) {
             builder = org.springframework.security.core.userdetails.User.withUsername(username);
             builder.password(user.getPassword());
-            builder.roles(user.getRole());
+            builder.authorities(user.getRole());
         } else {
             throw new NotFoundException(this.getClass().getSimpleName(), username);
         }
