@@ -18,8 +18,7 @@ public class LocationController {
     }
 
     @GetMapping("/locations")
-    public List<Location> findAllLocations(@RequestParam(required = false) Integer page,
-                                           @AuthenticationPrincipal UsernamePasswordAuthenticationToken user) {
+    public List<Location> findAllLocations(@RequestParam(required = false) Integer page) {
         int pageNumber = page != null && page >= 0 ? page : 0;
         return locationService.findAll(pageNumber);
     }

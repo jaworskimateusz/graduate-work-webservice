@@ -14,7 +14,7 @@ public class NotFoundAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<CustomErrorResponse> notFoundHandler(NotFoundException e) {
         return new ResponseEntity<>(
-                new CustomErrorResponse(LocalDateTime.now(), e.getMessage(), HttpStatus.NOT_FOUND.value()),
+                new ErrorResponseTimeStamp(LocalDateTime.now(), e.getMessage(), HttpStatus.NOT_FOUND.value()),
                 HttpStatus.NOT_FOUND);
     }
 }

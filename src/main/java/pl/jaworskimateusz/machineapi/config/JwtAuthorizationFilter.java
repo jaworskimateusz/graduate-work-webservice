@@ -2,14 +2,13 @@ package pl.jaworskimateusz.machineapi.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import pl.jaworskimateusz.machineapi.model.User;
+import pl.jaworskimateusz.machineapi.exception.CustomEntryPoint;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

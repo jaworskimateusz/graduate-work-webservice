@@ -17,7 +17,7 @@ public class BadRequestAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<CustomErrorResponse> badRequestHandle(Exception e) {
         return new ResponseEntity<>(
-                new CustomErrorResponse(LocalDateTime.now(), e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value()),
+                new ErrorResponseTimeStamp(LocalDateTime.now(), e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value()),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
