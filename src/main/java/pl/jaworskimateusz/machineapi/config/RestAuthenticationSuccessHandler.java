@@ -50,10 +50,10 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         response.setCharacterEncoding("utf-8");
 
         PrintWriter out = response.getWriter();
-        JSONObject jsonToken = new JSONObject("{\"token\":\"" + token+ "\"}");
+        JSONObject jsonToken = new JSONObject("{\"token\":\"" + token + "\"}");
         JSONObject user = new JSONObject(userService.findByUsername(principal.getUsername()));
 //        String js = ObjectToJson.objectToJson(userService.findByUsername(principal.getUsername()), User.class);
-        out.print(jsonToken + "," + user);
+        out.print("{" + "\"token\":\"" + token + "\"" + "," + "\"user\":" + user + "}");
         out.flush();
     }
 }

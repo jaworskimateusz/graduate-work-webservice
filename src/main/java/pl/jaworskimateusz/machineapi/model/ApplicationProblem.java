@@ -11,6 +11,8 @@ public class ApplicationProblem {
     private Long applicationProblemId;
     private String keywords;
     private String description;
+
+    @Column(name = "employee_id") //TODO
     private Long userId;
 
     public ApplicationProblem() {
