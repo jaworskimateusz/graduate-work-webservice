@@ -1,6 +1,8 @@
 package pl.jaworskimateusz.machineapi.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -19,6 +21,31 @@ public class User {
     private short enabled;
 
     public User() {
+    }
+
+    //TODO refactor names
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "users_tasks",
+            joinColumns = { @JoinColumn(name = "employees_employee_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tasks_task_id") })
+    List<Task> tasks = new ArrayList<>();
+
+    public void addTask(Task task) {
+        tasks.add(task);
+        task.getUsers().add(this);
+    }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
+        task.getUsers().remove(this);
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public long getUserId() {

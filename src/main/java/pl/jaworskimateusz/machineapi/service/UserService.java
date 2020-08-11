@@ -4,7 +4,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import pl.jaworskimateusz.machineapi.dto.TaskDto;
 import pl.jaworskimateusz.machineapi.exception.NotFoundException;
+import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;
 import pl.jaworskimateusz.machineapi.repository.UserRepository;
 
@@ -40,6 +42,15 @@ public class UserService implements UserDetailsService {
     public void deleteById(long id) {
         User user = this.findById(id);
         userRepository.delete(user);
+    }
+
+    public Task findUserTask(long userId, long taskId) {
+        return this.findById(userId)
+                .getTasks()
+                .stream()
+                .filter(t -> t.getTaskId() == taskId)
+                .findFirst()
+                .orElseThrow(()-> new NotFoundException(this.getClass().getSimpleName(), taskId));
     }
 
     @Override
