@@ -8,8 +8,11 @@ import pl.jaworskimateusz.machineapi.mapper.UserMapper;
 import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;
 import pl.jaworskimateusz.machineapi.service.UserService;
+import pl.jaworskimateusz.machineapi.utils.DateUtils;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -42,8 +45,11 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/tasks")
-    public List<TaskDto> findUserTasks(@PathVariable long userId) {
-        return TaskMapper.mapToTaskDtoList(userService.findById(userId).getTasks());
+    public List<TaskDto> findUserTasks(@PathVariable long userId, @RequestParam(required = false) String date) {
+        if (date.equals(""))
+            return TaskMapper.mapToTaskDtoList(userService.findById(userId).getTasks());
+        Date startDate = DateUtils.stringToDate(date);
+        return TaskMapper.mapToTaskDtoList(userService.findUserTasksAfter(startDate, userId));
     }
 
     @GetMapping("/users/{userId}/tasks/{taskId}")
@@ -52,10 +58,11 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/tasks")
-    public UserDto saveUserTask(@PathVariable long userId, @RequestBody Task task) {
+    public TaskDto saveUserTask(@PathVariable long userId, @RequestBody Task task) {
         User user = userService.findById(userId);
         user.addTask(task);
-        return UserMapper.mapToUserDto(userService.saveUser(user));
+        userService.saveUser(user);
+        return TaskMapper.mapToTaskDto(task);
     }
 
     @DeleteMapping("/users/{userId}/tasks")

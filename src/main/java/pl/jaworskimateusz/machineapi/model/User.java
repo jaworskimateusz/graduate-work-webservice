@@ -24,13 +24,14 @@ public class User {
     }
 
     //TODO refactor names
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "users_tasks",
             joinColumns = { @JoinColumn(name = "employees_employee_id") },
             inverseJoinColumns = { @JoinColumn(name = "tasks_task_id") })
     List<Task> tasks = new ArrayList<>();
 
     public void addTask(Task task) {
+        ifExists(task);
         tasks.add(task);
         task.getUsers().add(this);
     }
@@ -38,6 +39,15 @@ public class User {
     public void removeTask(Task task) {
         tasks.remove(task);
         task.getUsers().remove(this);
+    }
+
+    private void ifExists(Task task) {
+        for (Task t : tasks) {
+            if (t.getTaskId().equals(task.getTaskId())) {
+                removeTask(t);
+                break;
+            }
+        }
     }
 
     public List<Task> getTasks() {

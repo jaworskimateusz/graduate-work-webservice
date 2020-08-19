@@ -10,7 +10,9 @@ import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;
 import pl.jaworskimateusz.machineapi.repository.UserRepository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -51,6 +53,14 @@ public class UserService implements UserDetailsService {
                 .filter(t -> t.getTaskId() == taskId)
                 .findFirst()
                 .orElseThrow(()-> new NotFoundException(this.getClass().getSimpleName(), taskId));
+    }
+
+    public List<Task> findUserTasksAfter(Date date, Long userId) {
+        return findById(userId)
+                .getTasks()
+                .stream()
+                .filter(task -> task.getDate().after(date))
+                .collect(Collectors.toList());
     }
 
     @Override
