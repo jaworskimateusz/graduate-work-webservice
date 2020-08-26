@@ -1,11 +1,13 @@
 package pl.jaworskimateusz.machineapi.repository;
 
-import pl.jaworskimateusz.machineapi.model.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import pl.jaworskimateusz.machineapi.model.Machine;
 
 @Repository
-public interface LocationRepository extends JpaRepository<Location, Long> {
+public interface MachineRepository extends JpaRepository<Machine, Long> {
+
+    Machine findByCode(String code);
 
 }
 

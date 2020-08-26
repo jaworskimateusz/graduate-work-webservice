@@ -9,4 +9,8 @@ public class NotFoundException extends RuntimeException{
     public NotFoundException(String serviceName, String username) {
         super("Could not find element from " + serviceName + " with username: " + username);
     }
+
+    public NotFoundException(String serviceName, String code, Boolean flag) {
+        super("Could not find element from " + serviceName + " with code: " + code);
+    }
 }

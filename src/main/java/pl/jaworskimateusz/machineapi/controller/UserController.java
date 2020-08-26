@@ -1,18 +1,21 @@
 package pl.jaworskimateusz.machineapi.controller;
 
 import org.springframework.web.bind.annotation.*;
+import pl.jaworskimateusz.machineapi.dto.MachineDto;
 import pl.jaworskimateusz.machineapi.dto.TaskDto;
 import pl.jaworskimateusz.machineapi.dto.UserDto;
+import pl.jaworskimateusz.machineapi.mapper.MachineMapper;
 import pl.jaworskimateusz.machineapi.mapper.TaskMapper;
 import pl.jaworskimateusz.machineapi.mapper.UserMapper;
+import pl.jaworskimateusz.machineapi.model.Machine;
 import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;
 import pl.jaworskimateusz.machineapi.service.UserService;
 import pl.jaworskimateusz.machineapi.utils.DateUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -70,5 +73,30 @@ public class UserController {
         User user = userService.findById(userId);
         user.removeTask(task);
         userService.saveUser(user);
+    }
+
+    @GetMapping("/users/{userId}/machines")
+    public List<MachineDto> findAllUserMachines(@PathVariable long userId) {
+//        return MachineMapper.mapToMachineDtoList(userService.findById(userId).getMachines());
+        return MachineMapper.mapToMachineDtoList(generateMachines());
+    }
+
+    private List<Machine> generateMachines() {
+        List<Machine> machines = new ArrayList<>();
+        for (long i = 0; i < 50; i++) {
+            long size = 100 + i;
+            machines.add(new Machine(
+                    i,
+                    i,
+                    "Name " + i,
+                    "CODE821092RORJS" + i,
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
+                            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s," +
+                            " when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                    "https://picsum.photos/" + size,
+                    "http://www.pdf995.com/samples/pdf.pdf"
+            ));
+        }
+        return machines;
     }
 }

@@ -4,9 +4,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.jaworskimateusz.machineapi.exception.NotFoundException;
 import pl.jaworskimateusz.machineapi.model.ApplicationProblem;
-import pl.jaworskimateusz.machineapi.model.Location;
 import pl.jaworskimateusz.machineapi.repository.ApplicationProblemsRepository;
-import pl.jaworskimateusz.machineapi.repository.LocationRepository;
 
 import java.util.List;
 

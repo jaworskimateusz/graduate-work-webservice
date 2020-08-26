@@ -2,9 +2,7 @@ package pl.jaworskimateusz.machineapi.controller;
 
 import org.springframework.web.bind.annotation.*;
 import pl.jaworskimateusz.machineapi.model.ApplicationProblem;
-import pl.jaworskimateusz.machineapi.model.Location;
 import pl.jaworskimateusz.machineapi.service.ApplicationProblemsService;
-import pl.jaworskimateusz.machineapi.service.LocationService;
 
 import java.util.List;
 
