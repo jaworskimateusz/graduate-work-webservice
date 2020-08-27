@@ -65,7 +65,7 @@ public class UserController {
         User user = userService.findById(userId);
         user.addTask(task);
         userService.saveUser(user);
-        return TaskMapper.mapToTaskDto(task);
+        return TaskMapper.mapToTaskDto(userService.saveTask(task)); //todo db on cascade?
     }
 
     @DeleteMapping("/users/{userId}/tasks")
@@ -83,7 +83,7 @@ public class UserController {
 
     private List<Machine> generateMachines() {
         List<Machine> machines = new ArrayList<>();
-        for (long i = 0; i < 50; i++) {
+        for (long i = 1; i < 50; i++) {
             long size = 100 + i;
             machines.add(new Machine(
                     i,

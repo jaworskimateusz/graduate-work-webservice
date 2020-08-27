@@ -21,6 +21,9 @@ public class Machine {
     @OneToMany(mappedBy = "machine")
     private List<Issue> issues = new ArrayList<>();
 
+    @OneToMany(mappedBy = "machine")
+    private List<Service> services = new ArrayList<>();
+
     public Machine() {
     }
 
@@ -116,5 +119,25 @@ public class Machine {
     public void removeIssue(Issue issue) {
         issues.remove(issue);
         issue.setMachine(null);
+    }
+
+    public void addService(Service service) {
+        ifExists(service);
+        services.add(service);
+        service.setMachine(this);
+    }
+
+    private void ifExists(Service service) {
+        for (Service s : services) {
+            if (s.getServiceId().equals(service.getServiceId())) {
+                removeService(s);
+                break;
+            }
+        }
+    }
+
+    public void removeService(Service service) {
+        services.remove(service);
+        service.setMachine(null);
     }
 }

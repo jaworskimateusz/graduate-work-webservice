@@ -8,6 +8,7 @@ import pl.jaworskimateusz.machineapi.dto.TaskDto;
 import pl.jaworskimateusz.machineapi.exception.NotFoundException;
 import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;
+import pl.jaworskimateusz.machineapi.repository.TaskRepository;
 import pl.jaworskimateusz.machineapi.repository.UserRepository;
 
 import java.util.Date;
@@ -18,11 +19,13 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
+    private TaskRepository taskRepository;
 
     private static final int PAGE_SIZE = 20;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, TaskRepository taskRepository) {
         this.userRepository = userRepository;
+        this.taskRepository = taskRepository;
     }
 
     public List<User> findAll(int page) {
@@ -39,6 +42,10 @@ public class UserService implements UserDetailsService {
 
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public Task saveTask(Task task) {
+        return taskRepository.save(task);
     }
 
     public void deleteById(long id) {
