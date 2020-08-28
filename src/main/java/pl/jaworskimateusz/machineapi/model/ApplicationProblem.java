@@ -3,7 +3,7 @@ package pl.jaworskimateusz.machineapi.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "aplication_problems") //TODO repair db
+@Table(name = "application_problems")
 public class ApplicationProblem {
 
     @Id
@@ -11,8 +11,7 @@ public class ApplicationProblem {
     private Long applicationProblemId;
     private String keywords;
     private String description;
-
-    @Column(name = "employee_id") //TODO
+    private String versionCode;
     private Long userId;
 
     public ApplicationProblem() {
@@ -48,5 +47,13 @@ public class ApplicationProblem {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(String versionCode) {
+        this.versionCode = versionCode;
     }
 }

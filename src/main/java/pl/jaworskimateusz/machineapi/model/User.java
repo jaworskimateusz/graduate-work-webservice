@@ -17,17 +17,16 @@ public class User {
     private String firstName;
     private String lastName;
     private int phoneNumber;
-    private Long departmentId;
+    private String department;
     private short enabled;
 
     public User() {
     }
 
-    //TODO refactor names
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "users_tasks",
-            joinColumns = { @JoinColumn(name = "employees_employee_id") },
-            inverseJoinColumns = { @JoinColumn(name = "tasks_task_id") })
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "task_id") })
     List<Task> tasks = new ArrayList<>();
 
     public void addTask(Task task) {
@@ -122,11 +121,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }

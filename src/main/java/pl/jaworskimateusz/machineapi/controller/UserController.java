@@ -87,7 +87,6 @@ public class UserController {
             long size = 100 + i;
             machines.add(new Machine(
                     i,
-                    i,
                     "Name " + i,
                     "CODE821092RORJS" + i,
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +

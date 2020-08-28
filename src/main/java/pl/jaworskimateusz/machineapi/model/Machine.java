@@ -11,7 +11,6 @@ public class Machine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long machineId;
-    private Long departmentId; //TODO delete
     private String name;
     private String code;
     private String description;
@@ -27,9 +26,8 @@ public class Machine {
     public Machine() {
     }
 
-    public Machine(Long machineId, Long departmentId, String name, String code, String description, String image, String serviceInstruction) {
+    public Machine(Long machineId, String name, String code, String description, String image, String serviceInstruction) {
         this.machineId = machineId;
-        this.departmentId = departmentId;
         this.name = name;
         this.code = code;
         this.description = description;
@@ -43,14 +41,6 @@ public class Machine {
 
     public void setMachineId(Long machineId) {
         this.machineId = machineId;
-    }
-
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
     }
 
     public String getName() {

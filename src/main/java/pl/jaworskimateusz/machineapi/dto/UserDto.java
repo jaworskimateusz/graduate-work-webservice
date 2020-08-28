@@ -9,10 +9,10 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private int phoneNumber;
-    private Long departmentId;
+    private String department;
     private short enabled;
 
-    public UserDto(long userId, String username, String password, String role, String firstName, String lastName, int phoneNumber, Long departmentId, short enabled) {
+    public UserDto(long userId, String username, String password, String role, String firstName, String lastName, int phoneNumber, String department, short enabled) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -20,7 +20,7 @@ public class UserDto {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.departmentId = departmentId;
+        this.department = department;
         this.enabled = enabled;
     }
 
@@ -52,8 +52,8 @@ public class UserDto {
         return phoneNumber;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public String getDepartment() {
+        return department;
     }
 
     public short getEnabled() {
