@@ -10,10 +10,10 @@ import pl.jaworskimateusz.machineapi.mapper.UserMapper;
 import pl.jaworskimateusz.machineapi.model.Machine;
 import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;
+import pl.jaworskimateusz.machineapi.service.MachineService;
 import pl.jaworskimateusz.machineapi.service.UserService;
 import pl.jaworskimateusz.machineapi.utils.DateUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +21,11 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private MachineService machineService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, MachineService machineService) {
         this.userService = userService;
+        this.machineService = machineService;
     }
 
     @GetMapping("/users")
@@ -42,14 +44,9 @@ public class UserController {
         return UserMapper.mapToUserDto(userService.saveUser(user));
     }
 
-    @DeleteMapping("/users/{id}")
-    public void deleteUserById(@PathVariable long id) {
-        userService.deleteById(id);
-    }
-
     @GetMapping("/users/{userId}/tasks")
     public List<TaskDto> findUserTasks(@PathVariable long userId, @RequestParam(required = false) String date) {
-        if (date.equals(""))
+        if (date == null || date.equals(""))
             return TaskMapper.mapToTaskDtoList(userService.findById(userId).getTasks());
         Date startDate = DateUtils.stringToDate(date);
         return TaskMapper.mapToTaskDtoList(userService.findUserTasksAfter(startDate, userId));
@@ -65,7 +62,7 @@ public class UserController {
         User user = userService.findById(userId);
         user.addTask(task);
         userService.saveUser(user);
-        return TaskMapper.mapToTaskDto(userService.saveTask(task)); //todo db on cascade?
+        return TaskMapper.mapToTaskDto(user.getTasks().get(user.getTasks().size() - 1));
     }
 
     @DeleteMapping("/users/{userId}/tasks")
@@ -77,25 +74,23 @@ public class UserController {
 
     @GetMapping("/users/{userId}/machines")
     public List<MachineDto> findAllUserMachines(@PathVariable long userId) {
-//        return MachineMapper.mapToMachineDtoList(userService.findById(userId).getMachines());
-        return MachineMapper.mapToMachineDtoList(generateMachines());
+        return MachineMapper.mapToMachineDtoList(userService.findById(userId).getMachines());
     }
 
-    private List<Machine> generateMachines() {
-        List<Machine> machines = new ArrayList<>();
-        for (long i = 1; i < 50; i++) {
-            long size = 100 + i;
-            machines.add(new Machine(
-                    i,
-                    "Name " + i,
-                    "CODE821092RORJS" + i,
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
-                            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s," +
-                            " when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                    "https://picsum.photos/" + size,
-                    "http://www.pdf995.com/samples/pdf.pdf"
-            ));
-        }
-        return machines;
+    @PostMapping("/users/{userId}/machines")
+    public MachineDto saveUserMachine(@PathVariable long userId, @RequestBody Machine machine) {
+        User user = userService.findById(userId);
+        user.addMachine(machine);
+        userService.saveUser(user);
+        return MachineMapper.mapToMachineDto(user.getMachines().get(user.getMachines().size() - 1));
     }
+
+    @DeleteMapping("/users/{userId}/machines/{machineId}")
+    public void deleteUserMachineById(@PathVariable long userId, @PathVariable long machineId) {
+        User user = userService.findById(userId);
+        Machine machine = machineService.findById(machineId);
+        user.removeMachine(machine);
+        userService.saveUser(user);
+    }
+
 }

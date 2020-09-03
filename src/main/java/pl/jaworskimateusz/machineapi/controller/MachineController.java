@@ -12,7 +12,6 @@ import pl.jaworskimateusz.machineapi.model.Machine;
 import pl.jaworskimateusz.machineapi.model.Service;
 import pl.jaworskimateusz.machineapi.service.MachineService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,20 +34,14 @@ public class MachineController {
         return MachineMapper.mapToMachineDto(machineService.findById(id));
     }
 
+    @GetMapping("/machines/{code}")
+    public MachineDto findMachineByCode(@PathVariable String code) {
+        return MachineMapper.mapToMachineDto(machineService.findMachineByCode(code));
+    }
+
     @PostMapping("/machines")
     public MachineDto saveMachine(@RequestBody Machine machine) {
         return MachineMapper.mapToMachineDto(machineService.saveMachine(machine));
-    }
-
-    @DeleteMapping("/machines/{id}")
-    public void deleteMachineById(@PathVariable long id) {
-        machineService.deleteById(id);
-    }
-
-    @GetMapping("/machines/{code}")
-    public MachineDto findMachineByCode(@PathVariable String code) {
-//        return MachineMapper.mapToMachineDto(machineService.findMachineByCode(code)); //TODO
-        return MachineMapper.mapToMachineDto(generateMachines().get(0));
     }
 
     @GetMapping("/issues")
@@ -79,22 +72,4 @@ public class MachineController {
         return ServiceMapper.mapToServiceDto(machineService.saveService(service));
     }
 
-    //TODO delete after db changing
-    private List<Machine> generateMachines() {
-        List<Machine> machines = new ArrayList<>();
-        for (long i = 1; i < 50 ; i++) {
-            long size = 100 + i;
-            machines.add(new Machine(
-                    i,
-                    "Name " + i,
-                    "CODE821092RORJS" + i,
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
-                            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s," +
-                            " when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                    "https://picsum.photos/" + size,
-                    "http://www.pdf995.com/samples/pdf.pdf"
-            ));
-        }
-        return machines;
-    }
 }

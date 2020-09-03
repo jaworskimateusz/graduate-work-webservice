@@ -4,7 +4,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import pl.jaworskimateusz.machineapi.dto.TaskDto;
 import pl.jaworskimateusz.machineapi.exception.NotFoundException;
 import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;

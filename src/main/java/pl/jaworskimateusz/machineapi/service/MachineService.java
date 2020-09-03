@@ -34,6 +34,13 @@ public class MachineService {
         return machineRepository.findById(id).orElseThrow(()-> new NotFoundException(this.getClass().getSimpleName(), id));
     }
 
+    public Machine findMachineByCode(String code) {
+        Machine machine = machineRepository.findByCode(code);
+        if (machine == null)
+            throw new NotFoundException(this.getClass().getSimpleName(), code, false);
+        return machine;
+    }
+
     public Machine saveMachine(Machine machine) {
         return machineRepository.save(machine);
     }
@@ -43,19 +50,8 @@ public class MachineService {
         machineRepository.delete(machine);
     }
 
-    public Machine findMachineByCode(String code) {
-        Machine machine = machineRepository.findByCode(code);
-        if (machine == null)
-            throw new NotFoundException(this.getClass().getSimpleName(), code, false);
-        return machine;
-    }
-
     public Issue saveIssue(Issue issue) {
         return issueRepository.save(issue);
-    }
-
-    public Service saveService(Service service) {
-        return serviceRepository.save(service);
     }
 
     public List<Issue> findMachineIssues(long machineId, int pageNumber) {
@@ -65,4 +61,9 @@ public class MachineService {
     public List<Issue> getAllIssues(int pageNumber) {
         return issueRepository.findAll(PageRequest.of(pageNumber, PAGE_SIZE)).getContent();
     }
+
+    public Service saveService(Service service) {
+        return serviceRepository.save(service);
+    }
+
 }

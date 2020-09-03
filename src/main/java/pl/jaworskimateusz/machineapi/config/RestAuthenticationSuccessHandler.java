@@ -5,14 +5,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import pl.jaworskimateusz.machineapi.model.User;
 import pl.jaworskimateusz.machineapi.service.UserService;
-import pl.jaworskimateusz.machineapi.utils.ObjectToJson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +49,6 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         PrintWriter out = response.getWriter();
         JSONObject jsonToken = new JSONObject("{\"token\":\"" + token + "\"}");
         JSONObject user = new JSONObject(userService.findByUsername(principal.getUsername()));
-//        String js = ObjectToJson.objectToJson(userService.findByUsername(principal.getUsername()), User.class);
         out.print("{" + "\"token\":\"" + token + "\"" + "," + "\"user\":" + user + "}");
         out.flush();
     }

@@ -20,14 +20,20 @@ public class User {
     private String department;
     private short enabled;
 
-    public User() {
-    }
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch= FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE})
     @JoinTable(name = "users_tasks",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "task_id") })
     List<Task> tasks = new ArrayList<>();
+
+    @ManyToMany(fetch= FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE})
+    @JoinTable(name = "users_machines",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "machine_id") })
+    List<Machine> machines = new ArrayList<>();
+
+    public User() {
+    }
 
     public void addTask(Task task) {
         ifExists(task);
@@ -36,17 +42,19 @@ public class User {
     }
 
     public void removeTask(Task task) {
-        tasks.remove(task);
+        tasks.removeIf(t -> t.getTaskId().equals(task.getTaskId()));
         task.getUsers().remove(this);
     }
 
-    private void ifExists(Task task) {
-        for (Task t : tasks) {
-            if (t.getTaskId().equals(task.getTaskId())) {
-                removeTask(t);
-                break;
-            }
-        }
+    public void addMachine(Machine machine) {
+        ifExists(machine);
+        machines.add(machine);
+        machine.getUsers().add(this);
+    }
+
+    public void removeMachine(Machine machine) {
+        machines.removeIf(m -> m.getMachineId().equals(machine.getMachineId()));
+        machine.getUsers().remove(this);
     }
 
     public List<Task> getTasks() {
@@ -127,5 +135,31 @@ public class User {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public List<Machine> getMachines() {
+        return machines;
+    }
+
+    public void setMachines(List<Machine> machines) {
+        this.machines = machines;
+    }
+
+    private void ifExists(Task task) {
+        for (Task t : tasks) {
+            if (t.getTaskId().equals(task.getTaskId())) {
+                removeTask(t);
+                break;
+            }
+        }
+    }
+
+    private void ifExists(Machine machine) {
+        for (Machine m : machines) {
+            if (m.getMachineId().equals(machine.getMachineId())) {
+                removeMachine(m);
+                break;
+            }
+        }
     }
 }

@@ -42,7 +42,6 @@ public class Config {
         );
     }
 
-    //from swagger docs
     private SecurityContext createContext() {
         return SecurityContext.builder()
                 .securityReferences(createRef())
