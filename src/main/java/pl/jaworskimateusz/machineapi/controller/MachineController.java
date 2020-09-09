@@ -58,18 +58,12 @@ public class MachineController {
 
     @PostMapping("/machines/{machineId}/issues")
     public IssueDto saveMachineIssue(@PathVariable long machineId, @RequestBody Issue issue) {
-        Machine machine = machineService.findById(machineId);
-        machine.addIssue(issue);
-        machineService.saveMachine(machine);
-        return IssueMapper.mapToIssueDto(machineService.saveIssue(issue));
+        return IssueMapper.mapToIssueDto(machineService.saveMachineIssue(machineId, issue));
     }
 
     @PutMapping("/machines/{machineId}/services")
     public ServiceDto saveMachineService(@PathVariable long machineId, @RequestBody Service service) {
-        Machine machine = machineService.findById(machineId);
-        machine.addService(service);
-        machineService.saveMachine(machine);
-        return ServiceMapper.mapToServiceDto(machineService.saveService(service));
+        return ServiceMapper.mapToServiceDto(machineService.saveMachineService(machineId, service));
     }
 
 }

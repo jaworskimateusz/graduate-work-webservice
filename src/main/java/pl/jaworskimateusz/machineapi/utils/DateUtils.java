@@ -1,9 +1,11 @@
 package pl.jaworskimateusz.machineapi.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
@@ -20,14 +22,19 @@ public class DateUtils {
         return dateTime.format(formatter);
     }
 
-    public static Date stringToDate(String date) {
+    public static Date stringToDate(String text) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_SEC_PATTERN);
-            return new SimpleDateFormat(DATE_TIME_PATTERN).parse(date);
+            return new SimpleDateFormat(DATE_TIME_PATTERN).parse(text);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new Date();
+    }
+
+    public static String dateToString(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat(DATE_TIME_PATTERN);
+        return dateFormat.format(date);
     }
 
 }

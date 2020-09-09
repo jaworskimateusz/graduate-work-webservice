@@ -35,6 +35,29 @@ public class User {
     public User() {
     }
 
+    public User(long userId, String username, String password, String role, String firstName, String lastName, int phoneNumber, String department, short enabled) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.department = department;
+        this.enabled = enabled;
+    }
+
+    public User(String username, String password, String role, String firstName, String lastName, int phoneNumber, String department, short enabled) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.department = department;
+        this.enabled = enabled;
+    }
+
     public void addTask(Task task) {
         ifExists(task);
         tasks.add(task);

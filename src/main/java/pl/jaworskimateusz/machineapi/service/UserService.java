@@ -5,9 +5,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import pl.jaworskimateusz.machineapi.exception.NotFoundException;
+import pl.jaworskimateusz.machineapi.model.Machine;
 import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;
-import pl.jaworskimateusz.machineapi.repository.TaskRepository;
+import pl.jaworskimateusz.machineapi.repository.MachineRepository;
 import pl.jaworskimateusz.machineapi.repository.UserRepository;
 
 import java.util.Date;
@@ -18,16 +19,16 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
-    private TaskRepository taskRepository;
+    private MachineRepository machineRepository;
 
     private static final int PAGE_SIZE = 20;
 
-    public UserService(UserRepository userRepository, TaskRepository taskRepository) {
+    public UserService(UserRepository userRepository, MachineRepository machineRepository) {
         this.userRepository = userRepository;
-        this.taskRepository = taskRepository;
+        this.machineRepository = machineRepository;
     }
 
-    public List<User> findAll(int page) {
+    public List<User> findAllUsers(int page) {
         return userRepository.findAll(PageRequest.of(page, PAGE_SIZE)).getContent();
     }
 
@@ -41,15 +42,6 @@ public class UserService implements UserDetailsService {
 
     public User saveUser(User user) {
         return userRepository.save(user);
-    }
-
-    public Task saveTask(Task task) {
-        return taskRepository.save(task);
-    }
-
-    public void deleteById(long id) {
-        User user = this.findById(id);
-        userRepository.delete(user);
     }
 
     public Task findUserTask(long userId, long taskId) {
@@ -81,6 +73,34 @@ public class UserService implements UserDetailsService {
             throw new NotFoundException(this.getClass().getSimpleName(), username);
         }
         return builder.build();
+    }
+
+    public Task saveUserTask(long userId, Task task) {
+        User user = this.findById(userId);
+        user.addTask(task);
+        this.saveUser(user);
+        return user.getTasks().get(user.getTasks().size() - 1);
+    }
+
+    public void removeUserTask(long userId, Task task) {
+        User user = this.findById(userId);
+        user.removeTask(task);
+        saveUser(user);
+    }
+
+    public Machine saveUserMachine(long userId, Machine machine) {
+        User user = this.findById(userId);
+        user.addMachine(machine);
+        this.saveUser(user);
+        return user.getMachines().get(user.getMachines().size() - 1);
+    }
+
+    public void removeUserMachineById(long userId, long machineId) {
+        User user = this.findById(userId);
+        Machine machine = machineRepository.findById(machineId)
+                .orElseThrow(()-> new NotFoundException(this.getClass().getSimpleName(), machineId));
+        user.removeMachine(machine);
+        this.saveUser(user);
     }
 
 }

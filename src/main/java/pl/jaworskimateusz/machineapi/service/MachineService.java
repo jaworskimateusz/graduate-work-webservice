@@ -66,4 +66,17 @@ public class MachineService {
         return serviceRepository.save(service);
     }
 
+    public Issue saveMachineIssue(long machineId, Issue issue) {
+        Machine machine = this.findById(machineId);
+        machine.addIssue(issue);
+        this.saveMachine(machine);
+        return this.saveIssue(issue);
+    }
+
+    public Service saveMachineService(long machineId, Service service) {
+        Machine machine = this.findById(machineId);
+        machine.addService(service);
+        this.saveMachine(machine);
+        return this.saveService(service);
+    }
 }

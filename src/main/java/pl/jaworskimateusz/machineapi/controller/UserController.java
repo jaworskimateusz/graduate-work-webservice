@@ -10,7 +10,6 @@ import pl.jaworskimateusz.machineapi.mapper.UserMapper;
 import pl.jaworskimateusz.machineapi.model.Machine;
 import pl.jaworskimateusz.machineapi.model.Task;
 import pl.jaworskimateusz.machineapi.model.User;
-import pl.jaworskimateusz.machineapi.service.MachineService;
 import pl.jaworskimateusz.machineapi.service.UserService;
 import pl.jaworskimateusz.machineapi.utils.DateUtils;
 
@@ -21,17 +20,15 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    private MachineService machineService;
 
-    public UserController(UserService userService, MachineService machineService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.machineService = machineService;
     }
 
     @GetMapping("/users")
     public List<UserDto> findAllUsers(@RequestParam(required = false) Integer page) {
         int pageNumber = page != null && page >= 0 ? page : 0;
-        return UserMapper.mapToUserDtoList(userService.findAll(pageNumber));
+        return UserMapper.mapToUserDtoList(userService.findAllUsers(pageNumber));
     }
 
     @GetMapping("/users/{id}")
@@ -45,9 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/tasks")
-    public List<TaskDto> findUserTasks(@PathVariable long userId, @RequestParam(required = false) String date) {
-        if (date == null || date.equals(""))
+    public List<TaskDto> findAllUserTasks(@PathVariable long userId, @RequestParam(required = false) String date) {
+        if (date == null || date.equals("")) {
             return TaskMapper.mapToTaskDtoList(userService.findById(userId).getTasks());
+        }
         Date startDate = DateUtils.stringToDate(date);
         return TaskMapper.mapToTaskDtoList(userService.findUserTasksAfter(startDate, userId));
     }
@@ -59,17 +57,12 @@ public class UserController {
 
     @PostMapping("/users/{userId}/tasks")
     public TaskDto saveUserTask(@PathVariable long userId, @RequestBody Task task) {
-        User user = userService.findById(userId);
-        user.addTask(task);
-        userService.saveUser(user);
-        return TaskMapper.mapToTaskDto(user.getTasks().get(user.getTasks().size() - 1));
+        return TaskMapper.mapToTaskDto(userService.saveUserTask(userId, task));
     }
 
     @DeleteMapping("/users/{userId}/tasks")
-    public void deleteUserTask(@PathVariable long userId, @RequestBody Task task) {
-        User user = userService.findById(userId);
-        user.removeTask(task);
-        userService.saveUser(user);
+    public void removeUserTask(@PathVariable long userId, @RequestBody Task task) {
+        userService.removeUserTask(userId, task);
     }
 
     @GetMapping("/users/{userId}/machines")
@@ -79,18 +72,12 @@ public class UserController {
 
     @PostMapping("/users/{userId}/machines")
     public MachineDto saveUserMachine(@PathVariable long userId, @RequestBody Machine machine) {
-        User user = userService.findById(userId);
-        user.addMachine(machine);
-        userService.saveUser(user);
-        return MachineMapper.mapToMachineDto(user.getMachines().get(user.getMachines().size() - 1));
+        return MachineMapper.mapToMachineDto(userService.saveUserMachine(userId, machine));
     }
 
     @DeleteMapping("/users/{userId}/machines/{machineId}")
-    public void deleteUserMachineById(@PathVariable long userId, @PathVariable long machineId) {
-        User user = userService.findById(userId);
-        Machine machine = machineService.findById(machineId);
-        user.removeMachine(machine);
-        userService.saveUser(user);
+    public void removeUserMachineById(@PathVariable long userId, @PathVariable long machineId) {
+        userService.removeUserMachineById(userId, machineId);
     }
 
 }

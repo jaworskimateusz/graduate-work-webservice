@@ -29,6 +29,15 @@ public class Machine {
     public Machine() {
     }
 
+    public Machine(Long machineId, String name, String code, String description, String image, String serviceInstruction) {
+        this.machineId = machineId;
+        this.name = name;
+        this.code = code;
+        this.description = description;
+        this.image = image;
+        this.serviceInstruction = serviceInstruction;
+    }
+
     public Long getMachineId() {
         return machineId;
     }

@@ -24,6 +24,14 @@ public class Task {
     public Task() {
     }
 
+    public Task(Long taskId, String title, String description, Date date, int solved) {
+        this.taskId = taskId;
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.solved = solved;
+    }
+
     @ManyToMany(mappedBy = "tasks")
     private List<User> users = new ArrayList<>();
 
