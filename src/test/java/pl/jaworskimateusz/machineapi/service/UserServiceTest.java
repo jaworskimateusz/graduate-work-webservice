@@ -100,7 +100,7 @@ public class UserServiceTest {
 
         assertNotNull(result);
         assertEquals(result.getUsername(), user.getUsername());
-        assertEquals("ADMIN", user.getRole());
+        assertEquals(result.getRole(), "ADMIN");
         assertEquals(result.getUserId(), user.getUserId());
     }
 

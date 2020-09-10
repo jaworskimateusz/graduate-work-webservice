@@ -38,6 +38,14 @@ public class Machine {
         this.serviceInstruction = serviceInstruction;
     }
 
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
     public Long getMachineId() {
         return machineId;
     }

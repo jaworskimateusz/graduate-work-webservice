@@ -45,11 +45,6 @@ public class MachineService {
         return machineRepository.save(machine);
     }
 
-    public void deleteById(long id) {
-        Machine machine = this.findById(id);
-        machineRepository.delete(machine);
-    }
-
     public Issue saveIssue(Issue issue) {
         return issueRepository.save(issue);
     }
