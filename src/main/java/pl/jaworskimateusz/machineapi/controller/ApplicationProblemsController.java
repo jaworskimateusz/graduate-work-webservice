@@ -27,7 +27,7 @@ public class ApplicationProblemsController {
     }
 
     @PostMapping("/application-problems")
-    public ApplicationProblem saveLocation(@RequestBody ApplicationProblem applicationProblem) {
+    public ApplicationProblem saveApplicationProblem(@RequestBody ApplicationProblem applicationProblem) {
         return applicationProblemsService.save(applicationProblem);
     }
 

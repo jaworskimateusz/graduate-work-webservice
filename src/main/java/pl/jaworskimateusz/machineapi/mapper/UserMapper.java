@@ -13,7 +13,6 @@ public class UserMapper {
                 .map(UserMapper::mapToUserDto)
                 .collect(Collectors.toList());
     }
-    //from finger XD create user, maptodtp, assert with hardcoded
 
     public static UserDto mapToUserDto(User user) {
         return new UserDto(

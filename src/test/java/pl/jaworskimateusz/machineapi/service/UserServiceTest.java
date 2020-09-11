@@ -47,26 +47,26 @@ public class UserServiceTest {
     public void should_return_list_of_users() {
         User user1 = new User(1, "joedoe@email.com", "password","ADMIN", "Joe", "Doe", 123123123, "Service",(short)1);
         User user2 = new User(2, "john@gmail.com", "password123","WORKER", "JOHN", "-", 321321321, "CTO",(short)1);
-        List<User> users = new ArrayList<>();
-        users.add(user1);
-        users.add(user2);
-        Page<User> pagedUsers = new PageImpl<>(users);
+        List<User> actualUsers = new ArrayList<>();
+        actualUsers.add(user1);
+        actualUsers.add(user2);
+        Page<User> pagedUsers = new PageImpl<>(actualUsers);
 
         int page = 0;
         when(userRepository.findAll(PageRequest.of(page, 20))).thenReturn(pagedUsers);
-        List<User> result = userService.findAllUsers(page);
+        List<User> expectedUsers = userService.findAllUsers(page);
 
-        assertEquals(result.size(), 2);
-        assertEquals(result.get(0).getUsername(), user1.getUsername());
-        assertEquals(result.get(1).getFirstName(), "JOHN");
+        assertEquals(expectedUsers.size(), 2);
+        assertEquals(expectedUsers.get(0).getUsername(), user1.getUsername());
+        assertEquals(expectedUsers.get(1).getFirstName(), "JOHN");
     }
 
     @Test
     public void should_return_user_by_id() {
         long userId = 1L;
-        User user = new User(userId, "joedoe@email.com", "password","ADMIN", "Joe", "Doe", 123123123, "Service",(short)1);
+        User actualUser = new User(userId, "joedoe@email.com", "password","ADMIN", "Joe", "Doe", 123123123, "Service",(short)1);
 
-        when(userRepository.findById(userId)).thenReturn(java.util.Optional.of(user));
+        when(userRepository.findById(userId)).thenReturn(java.util.Optional.of(actualUser));
 
         assertNotNull(userService.findById(userId));
     }
@@ -74,9 +74,9 @@ public class UserServiceTest {
     @Test
     public void should_return_user_by_username() {
         String username = "joedoe@email.com";
-        User user = new User(1L, username, "password","ADMIN", "Joe", "Doe", 123123123, "Service",(short)1);
+        User actualUser = new User(1L, username, "password","ADMIN", "Joe", "Doe", 123123123, "Service",(short)1);
 
-        when(userRepository.findByUsername(username)).thenReturn(user);
+        when(userRepository.findByUsername(username)).thenReturn(actualUser);
 
         assertNotNull(userService.findByUsername(username));
     }
@@ -93,15 +93,15 @@ public class UserServiceTest {
 
     @Test
     public void should_save_user() {
-        User user = new User(1, "joedoe@email.com", "password","ADMIN", "Joe", "Doe", 123123123, "Service",(short)1);
-        when(userRepository.save(user)).thenReturn(user);
+        User actualUser = new User(1, "joedoe@email.com", "password","ADMIN", "Joe", "Doe", 123123123, "Service",(short)1);
+        when(userRepository.save(actualUser)).thenReturn(actualUser);
 
-        User result = userService.saveUser(user);
+        User expectedUser = userService.saveUser(actualUser);
 
-        assertNotNull(result);
-        assertEquals(result.getUsername(), user.getUsername());
-        assertEquals(result.getRole(), "ADMIN");
-        assertEquals(result.getUserId(), user.getUserId());
+        assertNotNull(expectedUser);
+        assertEquals(expectedUser.getUsername(), actualUser.getUsername());
+        assertEquals(expectedUser.getRole(), "ADMIN");
+        assertEquals(expectedUser.getUserId(), actualUser.getUserId());
     }
 
     @Test(expected = Exception.class)

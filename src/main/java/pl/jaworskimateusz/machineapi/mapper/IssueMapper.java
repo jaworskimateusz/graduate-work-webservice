@@ -21,7 +21,7 @@ public class IssueMapper {
                 issue.getDescription(),
                 issue.getSolution(),
                 issue.getWorkerSignature(),
-                issue.getMachine().getMachineId()
+                issue.getMachine() != null ? issue.getMachine().getMachineId() : null
         );
     }
 }

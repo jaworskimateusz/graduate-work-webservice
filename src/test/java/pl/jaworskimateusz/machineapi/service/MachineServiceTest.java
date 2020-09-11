@@ -20,6 +20,7 @@ import pl.jaworskimateusz.machineapi.repository.MachineRepository;
 import pl.jaworskimateusz.machineapi.repository.ServiceRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -53,18 +54,19 @@ public class MachineServiceTest {
     public void should_return_list_of_machines() {
         Machine machine1 = new Machine(1L, "machine1","","","","");
         Machine machine2 = new Machine(2L, "Arduino","","","","");
-        List<Machine> machines = new ArrayList<>();
-        machines.add(machine1);
-        machines.add(machine2);
-        Page<Machine> pagedMachines = new PageImpl<>(machines);
+        List<Machine> actualMachines = new ArrayList<>();
+        actualMachines.add(machine1);
+        actualMachines.add(machine2);
+        Page<Machine> pagedMachines = new PageImpl<>(actualMachines);
 
         int page = 0;
         when(machineRepository.findAll(PageRequest.of(page, 20))).thenReturn(pagedMachines);
-        List<Machine> result = machineService.findAll(page);
+        List<Machine> expectedMachines = machineService.findAll(page);
 
-        assertEquals(result.size(), 2);
-        assertEquals(result.get(0).getName(), machine1.getName());
-        assertEquals(result.get(1).getName(), "Arduino");
+        verify(machineRepository, Mockito.times(1)).findAll(PageRequest.of(page, 20));
+        assertEquals(expectedMachines.size(), 2);
+        assertEquals(expectedMachines.get(0).getName(), machine1.getName());
+        assertEquals(expectedMachines.get(1).getName(), "Arduino");
     }
 
     @Test
@@ -75,6 +77,8 @@ public class MachineServiceTest {
         when(machineRepository.findById(machineId)).thenReturn(java.util.Optional.of(machine));
 
         assertNotNull(machineService.findById(machineId));
+        verify(machineRepository, Mockito.times(1)).findById(any());
+
     }
 
     @Test
@@ -85,6 +89,8 @@ public class MachineServiceTest {
         when(machineRepository.findByCode(code)).thenReturn(machine);
 
         assertNotNull(machineService.findMachineByCode(code));
+        verify(machineRepository, Mockito.times(1)).findByCode(any());
+
     }
 
     @Test(expected = NotFoundException.class)
@@ -95,51 +101,55 @@ public class MachineServiceTest {
         lenient().when(machineRepository.findById(machineId)).thenReturn(java.util.Optional.of(machine));
 
         machineService.findById(2L);
+        verify(machineRepository, Mockito.times(1)).findById(any());
+
     }
 
     @Test
     public void should_save_machine() {
-        Machine machine = new Machine(1L, "Arduino","code","","","");
+        Machine actualMachine = new Machine(1L, "Arduino","code","","","");
 
-        when(machineRepository.save(machine)).thenReturn(machine);
+        when(machineRepository.save(actualMachine)).thenReturn(actualMachine);
 
-        Machine result = machineService.saveMachine(machine);
+        Machine expectedMachine = machineService.saveMachine(actualMachine);
 
-        assertNotNull(result);
-        assertEquals(result.getName(), machine.getName());
-        assertEquals(result.getCode(), "code");
+        verify(machineRepository, Mockito.times(1)).save(any());
+
+        assertNotNull(expectedMachine);
+        assertEquals(expectedMachine.getName(), actualMachine.getName());
+        assertEquals(expectedMachine.getCode(), "code");
     }
 
     @Test
     public void should_save_issue() {
-        Issue issue = new Issue(1L, "error","description","solution","sign");
+        Issue actualIssue = new Issue(1L, "error","description","solution","sign");
 
-        when(issueRepository.save(issue)).thenReturn(issue);
+        when(issueRepository.save(actualIssue)).thenReturn(actualIssue);
 
-        Issue result = machineService.saveIssue(issue);
+        Issue expectedIssue = machineService.saveIssue(actualIssue);
 
-        assertNotNull(result);
-        assertEquals(result.getKeywords(), issue.getKeywords());
-        assertEquals(result.getDescription(), "description");
+        verify(issueRepository, Mockito.times(1)).save(any());
+
+        assertNotNull(expectedIssue);
+        assertEquals(expectedIssue.getKeywords(), actualIssue.getKeywords());
+        assertEquals(expectedIssue.getDescription(), "description");
     }
 
     @Test
     public void should_return_list_of_issues() {
-        List<Issue> issues = new ArrayList<>();
         Issue issue1 = new Issue(1L, "error","description","solution","sign");
         Issue issue2 = new Issue(2L, "cpu","description 2","-","-");
-
-        issues.add(issue1);
-        issues.add(issue2);
-        Page<Issue> pagedIssues = new PageImpl<>(issues);
+        List<Issue> actualIssues  = Arrays.asList(issue1, issue2);
+        Page<Issue> pagedIssues = new PageImpl<>(actualIssues);
 
         int page = 0;
         when(issueRepository.findAll(PageRequest.of(page, 20))).thenReturn(pagedIssues);
-        List<Issue> result = machineService.getAllIssues(page);
+        List<Issue> expectedIssues = machineService.getAllIssues(page);
 
-        assertEquals(result.size(), 2);
-        assertEquals(result.get(0).getKeywords(), issue1.getKeywords());
-        assertEquals(result.get(1).getSolution(), "-");
+        verify(issueRepository, Mockito.times(1)).findAll(PageRequest.of(page, 20));
+        assertEquals(expectedIssues.size(), 2);
+        assertEquals(expectedIssues.get(0).getKeywords(), issue1.getKeywords());
+        assertEquals(expectedIssues.get(1).getSolution(), "-");
     }
 
     @Test
@@ -165,15 +175,16 @@ public class MachineServiceTest {
 
     @Test
     public void should_save_service() {
-        Service service = new Service(1L, new Date(),"cpu","description",1);
+        Service actualService = new Service(1L, new Date(),"cpu","description",1);
 
-        when(serviceRepository.save(service)).thenReturn(service);
+        when(serviceRepository.save(actualService)).thenReturn(actualService);
 
-        Service result = machineService.saveService(service);
+        Service expectedService = machineService.saveService(actualService);
 
-        assertNotNull(result);
-        assertEquals(result.getComponentName(), service.getComponentName());
-        assertEquals(result.getDescription(), "description");
+        verify(serviceRepository, Mockito.times(1)).save(any());
+        assertNotNull(expectedService);
+        assertEquals(expectedService.getComponentName(), actualService.getComponentName());
+        assertEquals(expectedService.getDescription(), "description");
     }
 
     @Test

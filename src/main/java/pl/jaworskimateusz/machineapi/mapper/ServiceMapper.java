@@ -8,12 +8,6 @@ import java.util.stream.Collectors;
 
 public class ServiceMapper {
 
-    public static List<ServiceDto> mapToServiceDtoList(List<Service> services) {
-        return services.stream()
-                .map(ServiceMapper::mapToServiceDto)
-                .collect(Collectors.toList());
-    }
-
     public static ServiceDto mapToServiceDto(Service service) {
         return new ServiceDto(
                 service.getServiceId(),
@@ -21,7 +15,7 @@ public class ServiceMapper {
                 service.getComponentName(),
                 service.getDescription(),
                 service.getResult(),
-                service.getMachine().getMachineId()
+                service.getMachine() != null ? service.getMachine().getMachineId() : null
         );
     }
 }

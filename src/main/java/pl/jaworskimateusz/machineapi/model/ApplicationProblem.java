@@ -17,6 +17,14 @@ public class ApplicationProblem {
     public ApplicationProblem() {
     }
 
+    public ApplicationProblem(Long applicationProblemId, String keywords, String description, String versionCode, Long userId) {
+        this.applicationProblemId = applicationProblemId;
+        this.keywords = keywords;
+        this.description = description;
+        this.versionCode = versionCode;
+        this.userId = userId;
+    }
+
     public Long getApplicationProblemId() {
         return applicationProblemId;
     }
