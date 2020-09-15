@@ -42,7 +42,8 @@ public class Config {
         );
     }
 
-    private SecurityContext createContext() {
+    @Bean
+    public SecurityContext createContext() {
         return SecurityContext.builder()
                 .securityReferences(createRef())
                 .forPaths(PathSelectors.any())
