@@ -23,7 +23,7 @@ public class MachineController {
         this.machineService = machineService;
     }
 
-    @GetMapping("/machines")
+    @GetMapping("/machines/all")
     public List<MachineDto> findAllMachines(@RequestParam(required = false) Integer page) {
         int pageNumber = page != null && page >= 0 ? page : 0;
         return MachineMapper.mapToMachineDtoList(machineService.findAll(pageNumber));
@@ -34,8 +34,8 @@ public class MachineController {
         return MachineMapper.mapToMachineDto(machineService.findById(id));
     }
 
-    @GetMapping("/machines/{code}")
-    public MachineDto findMachineByCode(@PathVariable String code) {
+    @GetMapping("/machines")
+    public MachineDto findMachineByCode(@RequestParam String code) {
         return MachineMapper.mapToMachineDto(machineService.findMachineByCode(code));
     }
 
