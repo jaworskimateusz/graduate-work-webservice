@@ -46,20 +46,6 @@ CREATE TABLE IF NOT EXISTS `machines`.`authorities` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO `machines`.`users`
-VALUES 
-(1,"mateusz123","Mateusz", "Jaworski", 724680012, 
-"$2y$12$z7InUjdFoHIQfezwbYByjOde/DtFi7l3AanhdQNUrrWhY24r5knE2",
-"ADMIN", 1, "Service CTO"),
-(2,"joedoe@email.com","Joe", "Doe", 661213019, 
-"$2y$12$z7InUjdFoHIQfezwbYByjOde/DtFi7l3AanhdQNUrrWhY24r5knE2",
-"WORKER", 1, "Department of Plenumatics");
-
-INSERT INTO `authorities` 
-VALUES 
-('ROLE_ADMIN', 1),
-('ROLE_WORKER', 2);
-
 -- -----------------------------------------------------
 -- Table `machines`.`application_problems`
 -- -----------------------------------------------------
@@ -189,6 +175,76 @@ CREATE TABLE IF NOT EXISTS `machines`.`issues` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+INSERT INTO `machines`.`users`
+VALUES
+(1,"mateusz123","Mateusz", "Jaworski", 724680012,
+"$2y$12$z7InUjdFoHIQfezwbYByjOde/DtFi7l3AanhdQNUrrWhY24r5knE2",
+"ADMIN", 1, "Service CTO"),
+(2,"joedoe@email.com","Joe", "Doe", 661213019,
+"$2y$12$z7InUjdFoHIQfezwbYByjOde/DtFi7l3AanhdQNUrrWhY24r5knE2",
+"WORKER", 1, "Department of Plenumatics");
+
+INSERT INTO `authorities`
+VALUES
+('ROLE_ADMIN', 1),
+('ROLE_WORKER', 2);
+
+INSERT INTO `machines`.`machines`
+(`machine_id`,`code`,`name`,`description`,`image`,`service_instruction`)
+VALUES
+(1,
+"AGAS1234DU2421",
+"DWAG AW12",
+"Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+ It has survived not only five centuries, but also the leap into electronic typesetting,
+ remaining essentially unchanged.",
+"https://fakeimg.pl/113/",
+"http://www.pdf995.com/samples/pdf.pdf"),
+(2,
+"CODE821092RORJS1",
+"Arduino ",
+"Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+ It has survived not only five centuries, but also the leap into electronic typesetting,
+ remaining essentially unchanged.",
+"https://fakeimg.pl/114/",
+"http://www.pdf995.com/samples/pdf.pdf"),
+(3,
+"CODE82P0SARORJS1",
+"Microcontroller ",
+"Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+ It has survived not only five centuries, but also the leap into electronic typesetting,
+ remaining essentially unchanged.",
+"https://fakeimg.pl/115/",
+"http://www.pdf995.com/samples/pdf.pdf");
+
+INSERT INTO `machines`.`users_machines` (`user_id`,`machine_id`)
+VALUES
+(1,1),(1,2),(1,3),(2,3);
+
+INSERT INTO `machines`.`issues`
+(`issue_id`,`keywords`,`description`,`solution`,`worker_signature`,`machine_id`)
+VALUES
+(1,"CPU", "Description","-",null,1),
+(2,"ENGINE, ERROR", "Engine does not start appropriate...","",null,2);
+
+INSERT INTO `machines`.`tasks` (`task_id`,`title`,`description`,`date`,`solved`)
+VALUES (1,"Change oil","Lorem ipsum ...",NOW(), 0),
+(2,"Make turbo service","Ipsum has been the industry''s standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make
+a type specimen book.",NOW(), 0),
+(3,"Create technical docs","Description ...",NOW(), 0),
+(4,"Check engine issues","Unknown printer took a galley of type ipsum ...",NOW(), 1);
+
+
+INSERT INTO `machines`.`users_tasks` (`user_id`, `task_id`)
+VALUES
+(1, 1),(1, 2),(1, 3),(1, 4),(2, 4);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
