@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: graduateworkmachines.azurecr.io/machines-app
     container_name: "api"
     restart: unless-stopped
     ports:
@@ -17,15 +18,9 @@ services:
     container_name: "database"
     image: mysql
     restart: unless-stopped
-    environment:
-      MYSQL_PASSWORD: student
-      MYSQL_ROOT_PASSWORD: student
-      MYSQL_DATABASE: machines
-      MYSQL_USER: student
+    env_file: .env
     ports:
       - "3306:3306"
-    volumes:
-      - ./script:/docker-entrypoint-initdb.d
     networks:
       - project
 
